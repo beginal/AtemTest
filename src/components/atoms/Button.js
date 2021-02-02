@@ -1,11 +1,8 @@
-import React from 'react'
+import React from "react";
+import 
 
-const Button = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const Button = ({ onClick, chindren }) => {
+  return <div></div>;
+};
 
-export default Button
+export default Button;
