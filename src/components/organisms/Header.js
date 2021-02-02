@@ -1,15 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import Header from "components/organisms/Header";
 
-const App = () => {
+const Header = () => {
   return (
     <Wrap>
-      <Header />
+      <div>
+        <img src="images/Logo.png" alt="CNPALogo" />
+      </div>
     </Wrap>
   );
 };
 
 const Wrap = styled.div``;
 
-export default App;
+export default Header;
