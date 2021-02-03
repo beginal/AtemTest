@@ -1,11 +1,14 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 import { AiFillCaretDown } from "react-icons/ai";
+import { addCheckedItem, removeCheckedItem } from "reducer/DashboardReducer";
 
 const Select = ({ title, list, checkedList }) => {
   const [isOpenList, setIsOpenList] = useState(true);
   const selectEl = useRef(null);
   const [checkedItems, setCheckedItems] = useState([]);
+  const dispatch = useDispatch();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleToggle = useCallback(({ target }) => {
@@ -18,9 +21,9 @@ const Select = ({ title, list, checkedList }) => {
 
   const handleChecked = (name) => {
     if (checkedItems.includes(name)) {
-      setCheckedItems(checkedItems.filter((i) => i !== name));
+      dispatch(addCheckedItem(name));
     } else {
-      setCheckedItems([...checkedItems, name]);
+      dispatch(removeCheckedItem(name));
     }
   };
 

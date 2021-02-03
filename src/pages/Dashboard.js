@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const Dashboard = () => {
   const [checkedItems, setCheckedItems] = useState([]);
-  
+
   return (
     <Wrap>
       <div className="esWrap">
