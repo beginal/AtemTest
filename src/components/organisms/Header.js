@@ -1,19 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 
 const Header = () => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
-  const MenuToggle = () => {
+  const [currentWidth, setCurrentWidth] = useState(window.innerWidth);
+  const [menuPosition, setMenuPosition] = useState("-77vw");
+
+  const MenuToggle = (isOpened) => {
     setIsMenuOpened((props) => !props);
+    setMenuPosition(isOpened ? 0 : "-77vw");
+    console.log(isOpened);
   };
+
+  const handleWindowResize = useCallback(() => {
+    setCurrentWidth(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+    // react가 window.innerWidth의 변화를 감지하지 못하니 EventListener를 넣어주어야 함.
+
+    // 다만 이러한 방식으로 이벤트를 추가해도 크롬의 toogle device toolbar는 감지하지 못하는듯함..
+  }, [handleWindowResize]);
+
   return (
     <Wrap>
-      {isMenuOpened && <div className="background" onClick={MenuToggle}></div>}
+      {isMenuOpened && (
+        <div className="background" onClick={() => MenuToggle(false)}></div>
+      )}
       <div className="logo">
-        <div onClick={MenuToggle}>햄버거</div>
+        {currentWidth < 377 && (
+          <div onClick={() => MenuToggle(true)}>햄버거</div>
+        )}
         <img src="images/Logo.png" alt="CNPAlogo" />
       </div>
-      <Menu>
+      <Menu menuPosition={menuPosition}>
         <div className="MenuLogo">
           <img src="images/colorLogo.png" alt="CNPAlogo" />
         </div>
@@ -106,9 +130,10 @@ const Menu = styled.div`
   }
   @media ${({ theme }) => theme.mobile} {
     position: fixed;
-    left: -75vw;
+    left: ${({ menuPosition }) => menuPosition};
     display: flex;
     flex-direction: column;
+    transition: left 0.5s;
     background: white;
     z-index: 1;
     width: 75vw;

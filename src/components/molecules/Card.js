@@ -100,6 +100,11 @@ const Wrap = styled.div`
       }
     }
   }
+  @media ${({ theme }) => theme.mobile} {
+    width: 320px;
+    min-width: 320px;
+    height: 344px;
+  }
 `;
 
 export default Card;
