@@ -14,7 +14,9 @@ const colors = {
 
 const theme = {
   colors,
-  sizes,
+  desktop: `(max-width: ${sizes.desktop}px)`,
+  tablet: `(max-width: ${sizes.tablet}px)`,
+  mobile: `(max-width: ${sizes.mobile}px)`,
 };
 
 export default theme;

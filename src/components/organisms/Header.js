@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Header = () => {
+  const [isMenuOpened, setIsMenuOpened] = useState(false);
+  const MenuToggle = () => {
+    setIsMenuOpened((props) => !props);
+  };
   return (
     <Wrap>
-      <Logo>
+      {isMenuOpened && <div className="background" onClick={MenuToggle}></div>}
+      <div className="logo">
+        <div onClick={MenuToggle}>햄버거</div>
         <img src="images/Logo.png" alt="CNPAlogo" />
-      </Logo>
-      <TopMenu>
+      </div>
+      <Menu>
+        <div className="MenuLogo">
+          <img src="images/colorLogo.png" alt="CNPAlogo" />
+        </div>
         <span>
-          <img src="images/Vector.png" alt="icon" />A 가공 업체
+          <img src="images/Vector.png" alt="icon" /> 파트너정밀가공
         </span>
         <span>로그아웃</span>
-      </TopMenu>
+      </Menu>
     </Wrap>
   );
 };
@@ -23,18 +32,60 @@ const Wrap = styled.div`
   background: ${({ theme }) => theme.colors.Primary700};
   padding: 25px 40px;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.24);
-`;
 
-const Logo = styled.div`
-  > img {
-    width: 153px;
-    height: 20px;
+  .background {
+    display: none;
+  }
+
+  .logo {
+    display: flex;
+    > img {
+      width: 153px;
+      height: 20px;
+    }
+  }
+
+  @media ${({ theme }) => theme.mobile} {
+    padding: 16px 23px;
+
+    .background {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .logo {
+      > div {
+        margin-right: 15px;
+      }
+      line-height: 12px;
+      > img {
+        width: 91.8px;
+        height: 12px;
+      }
+    }
   }
 `;
 
-const TopMenu = styled.div`
+const Menu = styled.div`
+  position: relative;
+  left: 0;
+  top: 0;
   display: flex;
   color: white;
+  .MenuLogo {
+    display: none;
+    padding: 16px 20px;
+    img {
+      width: 91.8px;
+      height: 12px;
+    }
+  }
   span {
     position: relative;
     display: flex;
@@ -51,6 +102,32 @@ const TopMenu = styled.div`
       width: 16.67px;
       height: 15px;
       margin-right: 5px;
+    }
+  }
+  @media ${({ theme }) => theme.mobile} {
+    position: fixed;
+    left: -75vw;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    z-index: 1;
+    width: 75vw;
+    height: 100vh;
+    color: black;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0.24);
+    .MenuLogo {
+      display: inline-block;
+      border-bottom: 1px solid #e9e9e9;
+    }
+    > span {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0;
+      margin: 0 32px;
+      margin-top: 24px;
+      > img {
+        background: black; // 임시 background
+      }
     }
   }
 `;
