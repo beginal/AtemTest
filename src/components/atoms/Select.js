@@ -88,6 +88,7 @@ const Select = ({ title, list }) => {
 const Wrap = styled.div`
   position: relative;
   display: inline-flex;
+  padding: 5px;
   .label {
     user-select: none;
     align-items: center;
@@ -110,7 +111,7 @@ const Wrap = styled.div`
   }
   .itemList {
     position: absolute;
-    bottom: -77px;
+    top: 40px;
     min-width: 130px;
     padding: 10px;
     padding-left: 5px;

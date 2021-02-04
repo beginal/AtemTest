@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
+import { AiOutlineMenu } from "react-icons/ai";
 
 const Header = () => {
   const [isMenuOpened, setIsMenuOpened] = useState(false);
@@ -33,7 +34,9 @@ const Header = () => {
       )}
       <div className="logo">
         {currentWidth < 377 && (
-          <div onClick={() => MenuToggle(true)}>햄버거</div>
+          <div onClick={() => MenuToggle(true)}>
+            <AiOutlineMenu />
+          </div>
         )}
         <img src="images/Logo.png" alt="CNPAlogo" />
       </div>
