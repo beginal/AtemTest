@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import CardList from "components/organisms/CardList";
-import Select from "components/atoms/Select";
 import styled from "styled-components";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,8 +7,7 @@ import { getCardLists, backUpCardLists } from "reducer/DashboardReducer";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const [isAdviceToggle, setIsAdviceToggle] = useState(true);
-  const { cardLists, resetCardLists, checkedItems } = useSelector(
+  const { cardLists, checkedItems } = useSelector(
     (store) => store.DashboardReducer
   );
 
@@ -24,28 +22,12 @@ const Dashboard = () => {
     })();
   }, [checkedItems, dispatch]);
 
-  const filterReset = () => {
-    dispatch(getCardLists(resetCardLists));
-  };
-
-  const handleToggleAdviceList = () => {
-    setIsAdviceToggle((props) => !props);
-    if (isAdviceToggle) {
-      const filteredList = cardLists.filter((card) => {
-        return card.status === "상담중";
-      });
-      dispatch(getCardLists(filteredList));
-    } else {
-      dispatch(getCardLists(resetCardLists));
-    }
-  };
-
   const methodCategory = ["밀링", "선반"];
   const materialCategory = ["알루미늄", "탄소강", "구리", "합금강", "강철"];
 
   return (
     <Wrap>
-      <div className="esWrap">
+      <div className="container">
         {/* class명 바꾸기 */}
         <div className="intro">
           <h2>들어온 요청</h2>
@@ -65,7 +47,7 @@ const Wrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  .esWrap {
+  .container {
     display: flex;
     flex-direction: column;
     justify-content: center;

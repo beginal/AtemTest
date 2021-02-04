@@ -8,7 +8,7 @@ import Switch from "components/atoms/Switch";
 
 const CardList = ({ list, methodCategory, materialCategory }) => {
   const dispatch = useDispatch();
-  const [isAdviceToggle, setIsAdviceToggle] = useState(true);
+  const [isAdviceToggle, setIsAdviceToggle] = useState(false);
   const { cardLists, resetCardLists, checkedItems } = useSelector(
     (store) => store.DashboardReducer
   );
@@ -20,7 +20,7 @@ const CardList = ({ list, methodCategory, materialCategory }) => {
 
   const handleToggleAdviceList = () => {
     setIsAdviceToggle((props) => !props);
-    if (isAdviceToggle) {
+    if (!isAdviceToggle) {
       const filteredList = cardLists.filter((card) => {
         return card.status === "상담중";
       });
@@ -102,6 +102,7 @@ const Wrap = styled.div`
       > span {
         display: flex;
         align-items: center;
+        font-size: 14px;
         cursor: pointer;
         padding: 0 10px;
         img {

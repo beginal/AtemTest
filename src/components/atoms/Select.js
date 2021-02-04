@@ -13,14 +13,13 @@ const Select = ({ title, list }) => {
     (store) => store.DashboardReducer
   );
   const [isOpenList, setIsOpenList] = useState(false);
+  const [checkedItemsLength, setCheckedItemsLength] = useState(0);
   const selectEl = useRef(null);
   const dispatch = useDispatch();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleToggle = useCallback(({ target }) => {
-    if (isOpenList && !selectEl.current.contains(target)) {
-      setIsOpenList(false);
-    } else if (!isOpenList && selectEl.current.contains(target)) {
+    if (!isOpenList && selectEl.current.contains(target)) {
       setIsOpenList(true);
     } else {
       setIsOpenList(false);
@@ -45,14 +44,21 @@ const Select = ({ title, list }) => {
       });
       dispatch(getCardLists(filteredList));
     }
-    // deps에 cardLists를 넣으면 callStack이 계속 찬다. 왜인지 아직 이해하진 못했음.
+    let checkedLength = list.filter((a) => {
+      return checkedItems
+        .map((b) => {
+          return a === b;
+        })
+        .includes(true);
+    }).length;
+    setCheckedItemsLength(checkedLength);
+    // filter된 list를 반환하기 위한 코드
+    // deps에 cardLists를 넣으면 callStack이 계속 차버리는 문제가 있음
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkedItems, dispatch]);
 
   useEffect(() => {
-    console.log(checkedItems);
-  }, [checkedItems]);
-
-  useEffect(() => {
+    // 외부 클릭시 닫히게
     window.addEventListener("click", handleToggle);
     return () => {
       window.removeEventListener("click", handleToggle);
@@ -60,9 +66,10 @@ const Select = ({ title, list }) => {
   }, [handleToggle]);
 
   return (
-    <Wrap ref={selectEl} isOpenList={isOpenList}>
+    <Wrap ref={selectEl} checkedItemsLength={checkedItemsLength}>
       <div className="label" onClick={handleToggle}>
-        {title} <AiFillCaretDown />
+        {title} {checkedItemsLength > 0 ? `(${checkedItemsLength})` : ""}
+        <AiFillCaretDown />
       </div>
       {isOpenList && (
         <div className="itemList" onClick={(e) => e.stopPropagation()}>
@@ -90,23 +97,28 @@ const Wrap = styled.div`
   display: inline-flex;
   padding: 5px;
   .label {
+    position: relative;
     user-select: none;
     align-items: center;
     font-size: 12px;
-    color: ${({ theme, isOpenList }) =>
-      isOpenList ? "white" : theme.colors.Gray900};
+    color: ${({ theme, checkedItemsLength }) =>
+      checkedItemsLength ? "white" : theme.colors.Gray900};
     border: 1px solid #939fa5;
     border-radius: 4px;
-    background: ${({ theme, isOpenList }) =>
-      isOpenList ? theme.colors.Primary700 : "white"};
+    background: ${({ theme, checkedItemsLength }) =>
+      checkedItemsLength ? theme.colors.Primary700 : "white"};
     cursor: pointer;
     padding: 9px 12px;
+    padding-right: 24px;
     &:hover {
       border: 1px solid ${({ theme }) => theme.colors.Primary500};
     }
     > svg {
+      position: absolute;
+      right: 8px;
       margin-left: 12px;
-      color: ${({ isOpenList }) => (isOpenList ? "white" : "#939fa5")};
+      color: ${({ checkedItemsLength }) =>
+        checkedItemsLength ? "white" : "#939fa5"};
     }
   }
   .itemList {
@@ -136,6 +148,10 @@ const Wrap = styled.div`
           padding-left: 5px;
         }
       }
+    }
+  }
+  @media ${({ theme }) => theme.mobile} {
+    .label {
     }
   }
 `;
