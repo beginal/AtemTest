@@ -54,17 +54,12 @@ const CardList = ({ list, methodCategory, materialCategory }) => {
       <div className="cardLists">
         {list.length !== 0 ? (
           list.map(
-            ({
-              title,
-              client,
-              due,
-              count,
-              amount,
-              method,
-              material,
-              status,
-            }) => (
+            (
+              { title, client, due, count, amount, method, material, status },
+              i
+            ) => (
               <Card
+                key={i}
                 title={title}
                 client={client}
                 due={due}

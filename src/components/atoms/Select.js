@@ -74,13 +74,14 @@ const Select = ({ title, list }) => {
       {isOpenList && (
         <div className="itemList" onClick={(e) => e.stopPropagation()}>
           <ul>
-            {list.map((item) => (
-              <li onClick={() => handleChecked(item)}>
+            {list.map((item, i) => (
+              <li onClick={() => handleChecked(item)} key={i}>
                 <input
                   type="checkbox"
                   name="itemList"
                   value={item}
                   checked={checkedItems.includes(item)}
+                  onChange={() => handleChecked(item)}
                 />
                 <span>{item}</span>
               </li>

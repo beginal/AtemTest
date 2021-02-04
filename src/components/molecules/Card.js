@@ -21,8 +21,8 @@ const Card = (props) => {
       </div>
       <div className="description">
         <ul>
-          {descriptionItem.map(({ name, value }) => (
-            <li>
+          {descriptionItem.map(({ name, value }, i) => (
+            <li key={i}>
               <span>{name}</span>
               <span>{value}</span>
             </li>
