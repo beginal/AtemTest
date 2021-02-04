@@ -19,6 +19,7 @@ const Select = ({ title, list }) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleToggle = useCallback(({ target }) => {
+    // selectbox 클릭시 메뉴 오픈
     if (!isOpenList && selectEl.current.contains(target)) {
       setIsOpenList(true);
     } else {
@@ -27,6 +28,7 @@ const Select = ({ title, list }) => {
   });
 
   const handleChecked = (name) => {
+    // 메뉴각각의 items 클릭시 checkedItems 변경
     dispatch(getCardLists(resetCardLists));
     if (checkedItems.includes(name)) {
       dispatch(removeCheckedItem(name));

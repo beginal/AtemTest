@@ -23,7 +23,6 @@ const Header = () => {
       window.removeEventListener("resize", handleWindowResize);
     };
     // react가 window.innerWidth의 변화를 감지하지 못하니 EventListener를 넣어주어야 함.
-
     // 다만 이러한 방식으로 이벤트를 추가해도 크롬의 toogle device toolbar는 감지하지 못하는듯함..
   }, [handleWindowResize]);
 
