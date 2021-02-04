@@ -2,12 +2,18 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { AiFillCaretDown } from "react-icons/ai";
-import { addCheckedItem, removeCheckedItem } from "reducer/DashboardReducer";
+import {
+  addCheckedItem,
+  getCardLists,
+  removeCheckedItem,
+} from "reducer/DashboardReducer";
 
-const Select = ({ title, list, checkedList }) => {
-  const [isOpenList, setIsOpenList] = useState(true);
+const Select = ({ title, list }) => {
+  const { checkedItems, resetCardLists, cardLists } = useSelector(
+    (store) => store.DashboardReducer
+  );
+  const [isOpenList, setIsOpenList] = useState(false);
   const selectEl = useRef(null);
-  const [checkedItems, setCheckedItems] = useState([]);
   const dispatch = useDispatch();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -16,16 +22,31 @@ const Select = ({ title, list, checkedList }) => {
       setIsOpenList(false);
     } else if (!isOpenList && selectEl.current.contains(target)) {
       setIsOpenList(true);
+    } else {
+      setIsOpenList(false);
     }
   });
 
   const handleChecked = (name) => {
+    dispatch(getCardLists(resetCardLists));
     if (checkedItems.includes(name)) {
-      dispatch(addCheckedItem(name));
-    } else {
       dispatch(removeCheckedItem(name));
+    } else {
+      dispatch(addCheckedItem(name));
     }
   };
+
+  useEffect(() => {
+    if (checkedItems.length !== 0 && cardLists.length !== 0) {
+      const filteredList = cardLists.filter((card) => {
+        return checkedItems.every((i) => {
+          return card.material.concat(card.method).includes(i);
+        });
+      });
+      dispatch(getCardLists(filteredList));
+    }
+    // deps에 cardLists를 넣으면 callStack이 계속 찬다. 왜인지 아직 이해하진 못했음.
+  }, [checkedItems, dispatch]);
 
   useEffect(() => {
     console.log(checkedItems);
@@ -68,6 +89,7 @@ const Wrap = styled.div`
   position: relative;
   display: inline-flex;
   .label {
+    user-select: none;
     align-items: center;
     font-size: 12px;
     color: ${({ theme, isOpenList }) =>
@@ -105,6 +127,7 @@ const Wrap = styled.div`
         align-items: center;
         margin: 8px;
         cursor: pointer;
+        user-select: none;
         input {
           margin: 0;
         }
